@@ -1,0 +1,99 @@
+.options-wrapper {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #e0e0e0;
+  font-family: sans-serif;
+}
+
+.options-title {
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-group label {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.control-group select {
+  padding: 10px;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.control-group select:focus {
+  border-color: #00a8ff;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-play {
+  background-color: #27ae60;
+  color: white;
+}
+.btn-play:hover {
+  background-color: #2ecc71;
+}
+
+.btn-pause {
+  background-color: #e67e22;
+  color: white;
+}
+.btn-pause:hover {
+  background-color: #f39c12;
+}
+
+.btn-reset {
+  background-color: #c0392b;
+  color: white;
+}
+.btn-reset:hover {
+  background-color: #e74c3c;
+}
+
+.control-group .MuiSlider-markLabel {
+  color: #fff;
+}
+
+.control-group .MuiSlider-valueLabel {
+  color: #fff;
+}
