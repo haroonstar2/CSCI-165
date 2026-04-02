@@ -19,6 +19,8 @@ function App() {
   const simStatus = useStore((state) => state.simStatus);
   const currentRunId = useStore((state) => state.currentRunId);
 
+  const setPath = useStore((state) => state.setPath);
+
   // Code runs whenever setMapData is called
   useEffect(() => {
     const loadMap = async () => {
@@ -70,6 +72,9 @@ function App() {
 
         if (data.status === "finished") {
           setSimStatus("idle");
+
+          setPath(data.path);
+
           updateSimulationStep(null, null, data.log);
           eventSource.close();
         } else {

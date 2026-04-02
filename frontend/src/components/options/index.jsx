@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./options.css";
 import useStore from "../../store/store";
 
@@ -26,6 +26,7 @@ const Options = () => {
   const targetNode = useStore((state) => state.targetNode);
   const mapGrid = useStore((state) => state.mapGrid);
   const camps = useStore((state) => state.camps);
+  const [side, setSide] = useState("blue");
 
   useEffect(() => {
     if (currentRunId && (simStatus === "running" || simStatus === "paused")) {
@@ -45,12 +46,16 @@ const Options = () => {
         return;
       }
 
+      const filteredCamps = camps.filter(
+        (camp) => camp.side === "neutral" || camp.side === side,
+      );
+
       const res = await startBackendSimulation(
         algorithm,
         startNode,
         targetNode,
         mapGrid,
-        camps,
+        filteredCamps,
       );
 
       setCurrentRunId(res.runId);
@@ -118,6 +123,20 @@ const Options = () => {
             { value: 100, label: 100 },
           ]}
         />
+      </div>
+
+      <div className="control-group">
+        <label htmlFor="algo-select">Side</label>
+
+        <select
+          id="algo-select"
+          value={side}
+          onChange={(e) => setSide(e.target.value)}
+          disabled={simStatus !== "idle"}
+        >
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+        </select>
       </div>
 
       {/* Action Buttons */}
