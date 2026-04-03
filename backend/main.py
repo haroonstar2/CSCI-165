@@ -7,6 +7,7 @@ import json
 
 from models import *
 from a_star import a_star, run_multi_camp_a_star
+from ga import run_multi_camp_ga
 
 app = FastAPI()
 
@@ -65,6 +66,18 @@ async def simulation_event_generator(run_id: str):
     try:
         if algo == "a_star":
             async for payload in run_multi_camp_a_star(run_id, req.start, req.target, req.camps, req.grid, active_simulations):
+                yield f"data: {json.dumps(payload)}\n\n"
+
+        elif algo == "genetic_algorithm":
+            async for payload in run_multi_camp_ga(
+                run_id,
+                req.start,
+                req.target,
+                req.camps,
+                req.grid,
+                active_simulations,
+                req.ga_config,
+            ):
                 yield f"data: {json.dumps(payload)}\n\n"
                 
         elif algo == "q_learning":

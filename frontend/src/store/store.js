@@ -2,19 +2,28 @@ import { create } from "zustand";
 
 const useStore = create((set) => ({
   // UI State
-  algorithm: "a_star", // 'a_star', 'dijkstra', 'q_learning'
+  algorithm: "a_star", // 'a_star', 'genetic_algorithm', 'dijkstra', 'q_learning'
   viewMode: "rift", // 'grid', 'rift'
   simStatus: "idle", // 'idle', 'running', 'paused', 'finished'
   playbackSpeed: 100, // ms delay per step
+  gaConfig: {
+    population_size: 100,
+    dna_length: 150,
+    mutation_rate: 2,
+    elite_count: 10,
+    max_generations: 60,
+  },
 
   // Simulation Data State
   currentRunId: null, // Tracks which algorithm is running so frontend can handle the connection
   mapGrid: [], // 2D array of terrain (0 = path, 1 = wall)
   camps: [], // Array of {x, y} coordinates for jungle camps
   agentPos: null, // Current agent position {x, y}
-  start: null, // {x, y}
-  target: null, // {x, y}
+  startNode: null, // {x, y}
+  targetNode: null, // {x, y}
   visitedNodes: [], // Array of {x, y} showing the search algorithm's expansion
+  populationPositions: [], // GA population positions for the current generation
+  generationPaths: [], // GA path traces for the current generation
   path: [], // The final computed path {x, y}[]
   logs: [], // Array of log strings for the terminal
 
@@ -23,6 +32,13 @@ const useStore = create((set) => ({
   setViewMode: (mode) => set({ viewMode: mode }),
   setSimStatus: (status) => set({ simStatus: status }),
   setPlaybackSpeed: (speed) => set({ playbackSpeed: speed }),
+  setGaConfig: (nextConfig) =>
+    set((state) => ({
+      gaConfig: {
+        ...state.gaConfig,
+        ...nextConfig,
+      },
+    })),
 
   setCurrentRunId: (id) => set({ currentRunId: id }),
 
@@ -58,26 +74,40 @@ const useStore = create((set) => ({
         targetNode: null,
         path: [],
         visitedNodes: [],
+        populationPositions: [],
+        generationPaths: [],
       };
     }),
 
   // Simulation Updates
-  updateSimulationStep: (agentPos, newVisitedNode, logMessage) => {
+  prepareSimulationRun: () =>
+    set({
+      agentPos: null,
+      visitedNodes: [],
+      populationPositions: [],
+      generationPaths: [],
+      path: [],
+      logs: [],
+    }),
+
+  updateSimulationStep: (payload) => {
     set((state) => {
       let updatedVisitedNodes = state.visitedNodes;
       let updatedLogs = state.logs;
 
-      if (newVisitedNode) {
-        updatedVisitedNodes = [...state.visitedNodes, newVisitedNode];
+      if (payload?.visitedNode) {
+        updatedVisitedNodes = [...state.visitedNodes, payload.visitedNode];
       }
 
-      if (logMessage) {
-        updatedLogs = [...state.logs, logMessage];
+      if (payload?.log) {
+        updatedLogs = [...state.logs, payload.log];
       }
 
       return {
-        agentPos: agentPos,
+        agentPos: payload?.agentPos ?? null,
         visitedNodes: updatedVisitedNodes,
+        populationPositions: payload?.populationPositions ?? [],
+        generationPaths: payload?.generationPaths ?? [],
         logs: updatedLogs,
       };
     });
@@ -92,6 +122,8 @@ const useStore = create((set) => ({
       currentRunId: null,
       agentPos: null,
       visitedNodes: [],
+      populationPositions: [],
+      generationPaths: [],
       path: [],
       logs: [],
       startNode: null,

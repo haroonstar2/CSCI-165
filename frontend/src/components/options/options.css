@@ -39,7 +39,21 @@
   outline: none;
 }
 
+.control-group input {
+  padding: 10px;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 1rem;
+  outline: none;
+}
+
 .control-group select:focus {
+  border-color: #00a8ff;
+}
+
+.control-group input:focus {
   border-color: #00a8ff;
 }
 

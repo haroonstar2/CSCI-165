@@ -18,7 +18,6 @@ function App() {
   const setSimStatus = useStore((state) => state.setSimStatus);
   const simStatus = useStore((state) => state.simStatus);
   const currentRunId = useStore((state) => state.currentRunId);
-
   const setPath = useStore((state) => state.setPath);
 
   // Code runs whenever setMapData is called
@@ -70,16 +69,18 @@ function App() {
       eventSource.onmessage = (event) => {
         const data = JSON.parse(event.data);
 
-        if (data.status === "finished") {
+        if (data.error) {
           setSimStatus("idle");
-
-          setPath(data.path);
-
-          updateSimulationStep(null, null, data.log);
+          updateSimulationStep({ log: data.error });
+          eventSource.close();
+        } else if (data.status === "finished") {
+          setSimStatus("idle");
+          setPath(data.path || []);
+          updateSimulationStep(data);
           eventSource.close();
         } else {
           // Normal step update.
-          updateSimulationStep(data.agentPos, data.visitedNode, data.log);
+          updateSimulationStep(data);
         }
       };
 
