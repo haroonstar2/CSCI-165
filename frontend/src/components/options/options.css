@@ -5,6 +5,9 @@
   gap: 20px;
   color: #e0e0e0;
   font-family: sans-serif;
+  height: 512px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .options-title {
@@ -12,6 +15,17 @@
   font-size: 1.5rem;
   border-bottom: 1px solid #444;
   padding-bottom: 2px;
+}
+
+.scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  margin: -20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .control-group {
@@ -60,7 +74,9 @@
 .button-group {
   display: flex;
   gap: 12px;
-  margin-top: 10px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #444;
 }
 
 .btn {
