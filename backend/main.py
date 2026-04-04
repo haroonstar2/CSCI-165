@@ -7,6 +7,7 @@ import json
 
 from models import *
 from a_star import a_star, run_multi_camp_a_star
+from q_learning import run_q_learning_simulation
 
 app = FastAPI()
 
@@ -68,9 +69,14 @@ async def simulation_event_generator(run_id: str):
                 yield f"data: {json.dumps(payload)}\n\n"
                 
         elif algo == "q_learning":
-            # async for payload in q_learning(...):
-            #     yield f"data: {json.dumps(payload)}\n\n"
-            yield f"data: {json.dumps({'log': 'Q-Learning not implemented yet'})}\n\n"
+            async for payload in run_q_learning_simulation(
+                run_id,
+                req.side,
+                req.camps,
+                req.grid,
+                active_simulations,
+            ):
+                yield f"data: {json.dumps(payload)}\n\n"
             
         else:
             yield f"data: {json.dumps({'error': f'Unknown algorithm: {algo}'})}\n\n"

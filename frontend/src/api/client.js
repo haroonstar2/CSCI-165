@@ -6,8 +6,9 @@ export const startBackendSimulation = async (
   target,
   grid,
   camps,
+  side,
 ) => {
-  const payload = { algorithm, start, target, grid, camps };
+  const payload = { algorithm, start, target, grid, camps, side };
 
   console.log(payload);
 

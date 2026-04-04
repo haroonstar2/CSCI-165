@@ -41,9 +41,11 @@ const Options = () => {
 
   const handleTogglePlay = async () => {
     if (simStatus === "idle" || simStatus === "finished") {
-      if (!startNode || !targetNode) {
-        alert("Please click the map to set a Start and Target location.");
-        return;
+      if(algorithm !== "q_learning") {
+        if (!startNode || !targetNode) {
+          alert("Please click the map to set a Start and Target location.");
+          return;
+        }
       }
 
       const filteredCamps = camps.filter(
@@ -56,6 +58,7 @@ const Options = () => {
         targetNode,
         mapGrid,
         filteredCamps,
+        side,
       );
 
       setCurrentRunId(res.runId);
