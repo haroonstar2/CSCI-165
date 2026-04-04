@@ -1,29 +1,12 @@
 import { useRef, useEffect } from "react";
-import useStore from "../../store/store";
 
 // Each cell will be 8 pixels wide/tall (512 / 64 = 8).
 const LOGICAL_GRID_SIZE = 64;
 const CANVAS_SIZE = 512;
 const CELL_SIZE = CANVAS_SIZE / LOGICAL_GRID_SIZE;
 
-async function drawPath(path, context) {
-  for (const node of path) {
-    context.fillStyle = "rgba(255, 196, 0, 0.87)";
-    context.fillRect(
-      node.x * CELL_SIZE,
-      node.y * CELL_SIZE,
-      CELL_SIZE,
-      CELL_SIZE,
-    );
-
-    await new Promise((resolve) => setTimeout(resolve, 10));
-  }
-}
-
 const GridCanvas = ({ gridData }) => {
   const canvasRef = useRef(null);
-  const visitedNodes = useStore((state) => state.visitedNodes);
-  const path = useStore((state) => state.path);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -60,19 +43,7 @@ const GridCanvas = ({ gridData }) => {
         context.strokeRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
       }
     }
-
-    context.fillStyle = "rgba(0, 150, 255, 0.4)";
-    visitedNodes.forEach((node) => {
-      context.fillRect(
-        node.x * CELL_SIZE,
-        node.y * CELL_SIZE,
-        CELL_SIZE,
-        CELL_SIZE,
-      );
-    });
-
-    drawPath(path, context);
-  }, [gridData, visitedNodes, path]); // Re-run this effect whenever the gridData changes
+  }, [gridData]); // Re-run this effect whenever the gridData changes
 
   return (
     <canvas

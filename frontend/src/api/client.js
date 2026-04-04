@@ -6,9 +6,17 @@ export const startBackendSimulation = async (
   target,
   grid,
   camps,
+  gaConfig,
   side,
 ) => {
-  const payload = { algorithm, start, target, grid, camps, side };
+  const payload = {
+    algorithm,
+    start,
+    target,
+    grid,
+    camps,
+    ga_config: gaConfig,
+    side };
 
   console.log(payload);
 

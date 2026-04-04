@@ -1,6 +1,7 @@
 import React from "react";
 import minimap from "../../assets/minimap.png";
 import GridCanvas from "./GridCanvas";
+import SimulationOverlay from "./SimulationOverlay";
 
 import useStore from "../../store/store";
 
@@ -96,6 +97,7 @@ function Map({ viewMode = "rift" }) {
       ) : (
         <GridCanvas gridData={mapGrid} />
       )}
+      <SimulationOverlay />
       {renderCamps(camps)}
       {renderOverlay(startNode, "#2ecc71", "S")} {/* Green Start */}
       {renderOverlay(targetNode, "#9b59b6", "T")} {/* Purple Target */}
