@@ -5,6 +5,22 @@ const LOGICAL_GRID_SIZE = 64;
 const CANVAS_SIZE = 512;
 const CELL_SIZE = CANVAS_SIZE / LOGICAL_GRID_SIZE;
 
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const drawAnimatedPath = async (context, path) => {
+  for (const node of path) {
+    context.fillStyle = "rgba(255, 196, 0, 0.87)";
+    context.fillRect(
+      node.x * CELL_SIZE,
+      node.y * CELL_SIZE,
+      CELL_SIZE,
+      CELL_SIZE,
+    );
+
+    await delay(10);
+  }
+};
+
 const SimulationOverlay = () => {
   const canvasRef = useRef(null);
   const visitedNodes = useStore((state) => state.visitedNodes);
@@ -52,17 +68,16 @@ const SimulationOverlay = () => {
       );
       context.fill();
     });
+  }, [generationPaths, populationPositions, visitedNodes]);
 
-    path.forEach((node) => {
-      context.fillStyle = "rgba(255, 196, 0, 0.87)";
-      context.fillRect(
-        node.x * CELL_SIZE,
-        node.y * CELL_SIZE,
-        CELL_SIZE,
-        CELL_SIZE,
-      );
-    });
-  }, [generationPaths, path, populationPositions, visitedNodes]);
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const context = canvas.getContext("2d");
+
+    if (!path.length) return;
+
+    drawAnimatedPath(context, path);
+  }, [path]);
 
   return (
     <canvas
