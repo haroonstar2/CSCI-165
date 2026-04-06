@@ -14,14 +14,13 @@ The tool provides a real-time visualization on a 64x64 grid mapped from the Leag
 * **Genetic Algorithm:** Evolves a population of paths over multiple generations to find an optimal route.
 * **Q-Learning:** Trains an agent through reinforcement to learn the optimal path by interacting with the environment.
 
-*(Note: Replace the following placeholders with actual GIF links from your project assets.)*
-* **Dijkstra's Demo:** `![Dijkstra Visualization](https://github.com/user-attachments/assets/6b59a5ea-1de3-40d9-93ca-4d668db96f1c)`
+* **Dijkstra's Demo:** ![Dijkstra Visualization](https://github.com/user-attachments/assets/6b59a5ea-1de3-40d9-93ca-4d668db96f1c)
 
-* **A\* Demo:** `![A* Visualization](https://github.com/user-attachments/assets/64c36ac4-5af1-4ee5-aeb6-41f2beaf99ac)`
+* **A\* Demo:** ![A* Visualization](https://github.com/user-attachments/assets/64c36ac4-5af1-4ee5-aeb6-41f2beaf99ac)
 
-* **GA Demo:** `![GA Visualization](https://github.com/user-attachments/assets/1519fa75-b945-46dd-827c-e7dccb7c020e)`
+* **GA Demo:** ![GA Visualization](https://github.com/user-attachments/assets/1519fa75-b945-46dd-827c-e7dccb7c020e)
 
-* **Q-Learning Demo:** `![Q-Learning Visualization](https://github.com/user-attachments/assets/63ccfcab-7e3a-479b-af24-76abf7b3fc53)`
+* **Q-Learning Demo:** ![Q-Learning Visualization](https://github.com/user-attachments/assets/63ccfcab-7e3a-479b-af24-76abf7b3fc53)
 
 ## Instructions
 
