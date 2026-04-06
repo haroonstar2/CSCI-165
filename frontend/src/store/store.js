@@ -7,11 +7,11 @@ const useStore = create((set) => ({
   simStatus: "idle", // 'idle', 'running', 'paused', 'finished'
   playbackSpeed: 100, // ms delay per step
   gaConfig: {
-    population_size: 100,
-    dna_length: 150,
-    mutation_rate: 2,
+    population_size: 250,
+    dna_length: 300,
+    mutation_rate: 4,
     elite_count: 10,
-    max_generations: 60,
+    max_generations: 300,
   },
 
   // Simulation Data State
