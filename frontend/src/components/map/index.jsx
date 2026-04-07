@@ -18,10 +18,8 @@ function Map({ viewMode = "rift" }) {
   const targetNode = useStore((state) => state.targetNode);
   const handleMapClick = useStore((state) => state.handleMapClick);
 
-  const algorithm = useStore((state) => state.algorithm);
 
   const onMapClick = (e) => {
-    if (algorithm === "q_learning") return;
     
     const pixelX = e.nativeEvent.offsetX;
     const pixelY = e.nativeEvent.offsetY;

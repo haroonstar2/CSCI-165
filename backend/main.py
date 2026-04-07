@@ -86,6 +86,8 @@ async def simulation_event_generator(run_id: str):
 
             async for payload in run_q_learning_simulation(
                 run_id,
+                req.start,
+                req.target,
                 req.side,
                 req.camps,
                 req.grid,

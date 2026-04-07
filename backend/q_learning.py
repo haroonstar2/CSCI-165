@@ -63,9 +63,8 @@ def choose_scuttle(side: str, camps: list[dict]) -> dict | None:
 # 5. BUILD RL NODES FROM FRONTEND CAMPS
 # =========================================================
 
-def build_q_nodes(side: str, camps: list[dict]) -> dict:
+def build_q_nodes(side: str, camps: list[dict], start: Point) -> dict:
     id_map = BLUE_ID_MAP if side == "blue" else RED_ID_MAP
-    start = BLUE_START if side == "blue" else RED_START
 
     nodes = {
         "start": {"x": start.x, "y": start.y}
@@ -93,6 +92,7 @@ class JungleQEnv:
         nodes,
         targets,
         node_data,
+        target_pos,
         start_name="start",
         max_steps=500,
         move_penalty=1.0,
@@ -115,6 +115,8 @@ class JungleQEnv:
         self.gold_weight = gold_weight
         self.xp_weight = xp_weight
         self.clear_time_weight = clear_time_weight
+
+        self.target_pos = target_pos
 
         self.actions = [0, 1, 2, 3]  # up, down, left, right
         self.action_moves = {
@@ -192,9 +194,15 @@ class JungleQEnv:
 
         done = False
 
-        if self.visited_mask == self.all_visited_mask:
-            reward += self.completion_bonus
-            done = True
+        if (
+            self.pos["x"] == self.target_pos["x"]
+            and self.pos["y"] == self.target_pos["y"]
+        ):
+            if self.visited_mask == self.all_visited_mask:
+                reward += self.completion_bonus
+                done = True
+            else:
+                reward -= 20
 
         if self.steps >= self.max_steps:
             done = True
@@ -212,12 +220,12 @@ def epsilon_greedy(Q, state, epsilon, n_actions=4):
 
 def train_q_learning(
     env,
-    episodes=2500,
+    episodes=5000,
     alpha=0.1,
     gamma=0.95,
     epsilon=1.0,
     epsilon_decay=0.999,
-    epsilon_min=0.05,
+    epsilon_min=0.02,
 ):
     Q = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
     rewards_per_episode = []
@@ -270,7 +278,8 @@ def run_greedy_policy(env, Q):
 # 8. MAIN ASYNC GENERATOR FOR FASTAPI SSE
 # =========================================================
 
-async def run_q_learning_simulation(run_id, side, camps, grid, active_simulations):
+async def run_q_learning_simulation(run_id, start, target, side, camps, grid, active_simulations):
+    target_pos = {"x": target.x, "y": target.y}
     if side not in ("blue", "red"):
         yield {
             "status": "finished",
@@ -279,7 +288,7 @@ async def run_q_learning_simulation(run_id, side, camps, grid, active_simulation
         }
         return
 
-    nodes = build_q_nodes(side, camps)
+    nodes = build_q_nodes(side, camps,start)
 
     required_targets = ["gromp", "blue", "wolves", "raptors", "red", "krugs","scuttle"]
     targets = [name for name in required_targets if name in nodes]
@@ -298,6 +307,7 @@ async def run_q_learning_simulation(run_id, side, camps, grid, active_simulation
         nodes=nodes,
         targets=targets,
         node_data=NODE_DATA,
+        target_pos = target_pos,
         start_name="start",
         max_steps=500,
         move_penalty=1.0,

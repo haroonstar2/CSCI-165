@@ -14,12 +14,12 @@ class GAConfig(BaseModel):
 
 class StartSimulationRequest(BaseModel):
     algorithm: str
-    start: Optional[Point] = None
-    target: Optional[Point] = None
+    start: Point 
+    target: Point
     grid: list[list[int]]
     camps: list[dict]
     ga_config: GAConfig | None = None
-    side: Optional[str] = None
+    side: str
 
 class SpeedRequest(BaseModel):
     speed: int
