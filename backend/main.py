@@ -10,6 +10,7 @@ from a_star import a_star, run_multi_camp_a_star
 from q_learning import run_q_learning_simulation
 from ga import run_multi_camp_ga
 from dijkstra import dijkstra, run_multi_camp_dijkstra
+from antcolony import run_ant_colony
 
 app = FastAPI()
 
@@ -103,6 +104,16 @@ async def simulation_event_generator(run_id: str):
                 req.camps,
                 req.grid,
                 active_simulations,
+            ):
+                yield f"data: {json.dumps(payload)}\n\n"
+        elif algo == "ant_colony":
+            async for payload in run_ant_colony(
+                run_id,
+                req.start,
+                req.target,
+                req.grid,
+                req.camps,
+                active_simulations
             ):
                 yield f"data: {json.dumps(payload)}\n\n"
             
