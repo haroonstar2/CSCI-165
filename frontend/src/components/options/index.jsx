@@ -101,6 +101,7 @@ const Options = () => {
             <option value="genetic_algorithm">Genetic Algorithm</option>
             <option value="dijkstra">Dijkstra's Algorithm</option>
             <option value="q_learning">Q-Learning</option>
+            <option value="ant_colony">Ant Colony Optimization</option>
           </select>
         </div>
 
